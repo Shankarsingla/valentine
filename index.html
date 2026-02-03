@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Valentine 💖</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+      text-align: center;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1, h2, p {
+      color: white;
+    }
+
+    .container {
+      margin-top: 120px;
+      position: relative;
+      z-index: 2;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 18px;
+      margin: 10px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #no {
+      position: absolute;
+    }
+
+    /* Floating hearts */
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      animation: floatUp linear forwards;
+      opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-110vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* Heart burst */
+    .burst-heart {
+      position: absolute;
+      font-size: 24px;
+      animation: burst 1.2s ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes burst {
+      from {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      to {
+        transform: translate(var(--x), var(--y)) scale(1.8);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Hey 💕</h1>
+
+    <div id="step1">
+      <p>What's your name?</p>
+      <input id="nameInput" placeholder="Enter your name" />
+      <br><br>
+      <button onclick="askValentine()">Next 💌</button>
+    </div>
+
+    <div id="step2" style="display:none;">
+      <h2 id="question"></h2>
+      <button onclick="yesClicked()">Yes 💖</button>
+      <button id="no" onmouseover="moveNo()">No 😜</button>
+    </div>
+  </div>
+
+  <script>
+    function askValentine() {
+      const name = document.getElementById("nameInput").value;
+      if (!name) {
+        alert("Please enter your name 😌");
+        return;
+      }
+
+      document.getElementById("step1").style.display = "none";
+      document.getElementById("step2").style.display = "block";
+      document.getElementById("question").innerText =
+        name + ", will you be my Valentine? 💘";
+    }
+
+    function moveNo() {
+      const noBtn = document.getElementById("no");
+      noBtn.style.left = Math.random() * 80 + "vw";
+      noBtn.style.top = Math.random() * 80 + "vh";
+    }
+
+    function yesClicked() {
+      heartBurst();
+
+      setTimeout(() => {
+        document.body.innerHTML =
+          "<h1 style='margin-top:200px;color:white;'>YAYYYY 💕🥰<br>I knew it 😍❤️</h1>";
+      }, 1200);
+    }
+
+    /* Floating hearts */
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (16 + Math.random() * 24) + "px";
+      heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 6000);
+    }
+
+    setInterval(createHeart, 300);
+
+    /* Heart burst on YES */
+    function heartBurst() {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+
+      for (let i = 0; i < 40; i++) {
+        const heart = document.createElement("div");
+        heart.className = "burst-heart";
+        heart.innerHTML = ["❤️", "💖", "💘", "💕"][Math.floor(Math.random() * 4)];
+        heart.style.left = centerX + "px";
+        heart.style.top = centerY + "px";
+
+        const x = (Math.random() - 0.5) * 400 + "px";
+        const y = (Math.random() - 0.5) * 400 + "px";
+        heart.style.setProperty("--x", x);
+        heart.style.setProperty("--y", y);
+
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 1200);
+      }
+    }
+  </script>
+
+</body>
+</html>
